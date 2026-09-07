@@ -1,8 +1,9 @@
 # econ-core
 
-Shared standards for the economic tracker collection (diesel, debt, jobs, and
-the ones after them). Exists so that when `econ` overlays every series on
-common axes, five sites do not need refactoring first.
+Shared standards for the economic tracker collection (diesel, debt, jobs,
+yield, credit, freight, housing, lending, and the ones after them). Exists so
+that when `econ` overlays every series on common axes, eight sites do not need
+refactoring first.
 
 Three things live here and nowhere else:
 
@@ -39,10 +40,44 @@ when econ-core changes.
   with a citation, rerun, re-vendor.
 - New fetchers belong here when a second app needs them, not before.
 
-Consumers: [jobs](../jobs) (jobs.chrislawrence.ca) and [debt](../debt)
-(debt.chrislawrence.ca). Re-vendor each one deliberately when this repo
-changes; the stamp at the top of each app's `api/econcore.py` says what it has,
-and nothing warns you when an app falls behind.
+## Consumers
+
+Eight apps vendor this repo:
+
+| App | Repo |
+|---|---|
+| credit | [Lawrence908/credit](https://github.com/Lawrence908/credit) |
+| debt | [Lawrence908/debt](https://github.com/Lawrence908/debt) |
+| diesel | [Lawrence908/diesel](https://github.com/Lawrence908/diesel) |
+| freight | [Lawrence908/freight](https://github.com/Lawrence908/freight) |
+| housing | [Lawrence908/housing](https://github.com/Lawrence908/housing) |
+| jobs | local only, not on GitHub |
+| lending | [Lawrence908/lending](https://github.com/Lawrence908/lending) |
+| yield | [Lawrence908/yield](https://github.com/Lawrence908/yield) |
+
+Do not trust that table for a re-vendor sweep. It was written by hand twice and
+was wrong both times, first at two apps and then at six. Enumerate from disk
+instead, which is also how you find the stragglers:
+
+```bash
+for d in /mnt/storage/apps/*/; do
+  [ -f "$d/api/econcore.py" ] && printf '%-10s %s\n' "$(basename "$d")" \
+    "$(sed -n '1s/.*econ-core \([a-f0-9]*\),.*/\1/p' "$d/api/econcore.py")"
+done
+```
+
+Re-vendor deliberately, per app; the stamp says what each one got, and nothing
+warns you when an app falls behind.
+
+This is not hypothetical. The C.D. Howe URL correction in 6015b74 was vendored
+into debt and jobs while the other six kept the redirecting URL, because
+whoever did it believed the collection was two apps.
+
+Vendoring also does not reach a URL an app has written into its own prose.
+`jobs/src/index.html` and `yield/src/index.html` both cite the Council's
+declaration with a hardcoded href, which has to be corrected by hand and needs
+a rebuild rather than a data refresh, since the HTML is baked into the image
+while `data/recessions.json` is bind-mounted.
 
 `debt` is also where the FRED User-Agent behaviour documented in `econcore.py`
 was measured: its own updater sent a custom UA on the keyless CSV path, so the
