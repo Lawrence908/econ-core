@@ -1,0 +1,57 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://chrislawrence.ca/econ-core/series.schema.json",
+  "title": "econ-core series",
+  "type": "object",
+  "required": ["id", "label", "source", "source_url", "units", "freq", "confidence", "as_of", "obs"],
+  "properties": {
+    "id": {"type": "string", "pattern": "^[a-z0-9_]+$"},
+    "label": {"type": "string", "minLength": 1},
+    "source": {"type": "string", "minLength": 1},
+    "source_url": {"type": "string", "pattern": "^https?://"},
+    "units": {"type": "string", "minLength": 1},
+    "freq": {"enum": ["daily", "weekly", "monthly", "quarterly", "annual"]},
+    "confidence": {"enum": ["reported", "estimate", "projection"]},
+    "as_of": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+    "obs": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "minItems": 2,
+        "maxItems": 2,
+        "items": [
+          {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+          {"type": "number"}
+        ]
+      }
+    },
+    "note": {"type": "string"},
+    "splices": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["at", "note"],
+        "properties": {
+          "at": {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+          "note": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "vintages": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "array",
+        "items": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {"type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$"},
+            {"type": "number"}
+          ]
+        }
+      }
+    },
+    "disputed": {"type": "object"}
+  }
+}
