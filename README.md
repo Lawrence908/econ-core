@@ -39,4 +39,13 @@ when econ-core changes.
   with a citation, rerun, re-vendor.
 - New fetchers belong here when a second app needs them, not before.
 
-First consumer: [jobs](../jobs) (jobs.chrislawrence.ca).
+Consumers: [jobs](../jobs) (jobs.chrislawrence.ca) and [debt](../debt)
+(debt.chrislawrence.ca). Re-vendor each one deliberately when this repo
+changes; the stamp at the top of each app's `api/econcore.py` says what it has,
+and nothing warns you when an app falls behind.
+
+`debt` is also where the FRED User-Agent behaviour documented in `econcore.py`
+was measured: its own updater sent a custom UA on the keyless CSV path, so the
+fallback had never once worked, silently, because a key was always set. That is
+the argument for the fetch policy living here rather than being reimplemented
+per app.

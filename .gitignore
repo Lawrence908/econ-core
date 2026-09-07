@@ -1,0 +1,14 @@
+# Live API keys. Never committed: this repo had no .gitignore until 2026-09-07,
+# so a single `git add -A` would have published a working FRED and EIA key.
+# History was checked when this file was added and .env had never been staged,
+# so the keys in it were never exposed and did not need rotating.
+.env
+
+# Import artefacts. econcore.py is imported by the apps that vendor it and by
+# tools/, so a __pycache__ appears here on any local run. econcore.cpython-312.pyc
+# was tracked until 2026-09-07; it is a build product of a file already in the
+# repo, and a stale one silently shadows nothing but confuses every diff.
+__pycache__/
+*.pyc
+
+*.log
