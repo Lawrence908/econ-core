@@ -40,10 +40,13 @@ CDHOWE_BANDS = [
     {"peak": "1981-06", "trough": "1982-10", "category": 4},
     {"peak": "1990-03", "trough": "1992-04", "category": 4},
     {"peak": "2008-10", "trough": "2009-05", "category": 4},
-    # Dated by the Council's May 2021 declaration; no category was assigned,
-    # only "the shortest and deepest recession since the Great Depression".
+    # Dated by the Council's 2021 declaration; no category was assigned, only
+    # "the shortest and deepest recession since the Great Depression".
+    # The /council-reports/ path this was first cited at now 302s to
+    # /publication/; storing the settled URL rather than the one that redirects,
+    # so the link checkers in the consuming apps do not report it every run.
     {"peak": "2020-02", "trough": "2020-04", "category": None,
-     "source_url": "https://cdhowe.org/council-reports/cd-howe-institute-business-cycle-council-declares-end-Covid-19-recession"},
+     "source_url": "https://cdhowe.org/publication/cd-howe-institute-business-cycle-council-declares-end-Covid-19-recession/"},
 ]
 
 
