@@ -95,6 +95,61 @@ One dataset for the whole collection: `data/recessions.json`, built by
 Bands are `{"peak": "YYYY-MM", "trough": "YYYY-MM"}`, month precision,
 shaded peak month through trough month inclusive.
 
+## Status block
+
+Every page carries one sentence at the top saying what its data currently
+says. The pill that renders it is cosmetic; the block behind it is the
+artifact, and it is what the hub reads to build a row per tracker without
+knowing anything about the page that produced it.
+
+Published at `analysis.status.headline`, and mirrored onto `/api/health`:
+
+```json
+{
+  "state": "signal",
+  "label": "Above the WWII peak",
+  "detail": "gross debt 122.6% of GDP against 119.1% in 1946",
+  "as_of": "2026-01-01",
+  "rule": "Gross federal debt exceeds its 1946 peak of 119.1% of GDP."
+}
+```
+
+- **state** — `signal` or `normal`, and nothing else. Two values because the
+  hub sorts on it. A page may use a more specific word for its own CSS hook
+  (yield shades on `inverted`); the payload field stays binary.
+- **label** — the bold clause: a state, not a number. "Inverted", "Standards
+  neutral", "Above the WWII peak". Reads as an assertion about the world.
+- **detail** — the figures that justify the label, in the page's own units.
+  Not normalized here; econ normalizes at render time.
+- **as_of** — the observation the state was computed from, never the fetch
+  time. A stale reading is still a true reading about its own date, and the
+  hub has to be able to say which.
+- **rule** — the printed threshold, in words. A different rule gives a
+  different state, so the rule travels with the state exactly as the episode
+  tables carry theirs. A `state` without a `rule` is an opinion.
+
+`signal_active` (`state == "signal"`) stays at `analysis.status` top level
+because `/api/health` already publishes it and monitoring keys on it.
+
+Per-series entries under `analysis.status.<series_id>` stay page-local and
+free-form: they feed that page's own tiles and prose, and the hub ignores
+them.
+
+A page with no threshold worth printing does not get a fabricated one. Where
+no alarm rule exists in the literature, the rule is stated as what it is:
+debt scores a level against a dated historical record, diesel scores the
+current margin's percentile against its own full history. Both are printed,
+and both are recomputable from `obs` by a reader who doubts them.
+
+Two anchors that are easy to get wrong, and are therefore pinned here.
+Gross federal debt and debt held by the public are different series with
+different records: gross peaked at 119.1% of GDP in 1946 (FRED
+`GFDGDPA188S`) and again at 125.9% in 2020, while debt held by the public
+peaked at 106.3% in 1946 (FRED `FYPUGDA188S`) and has not since been
+passed. Quoting a gross level against the 106.3% record, or the reverse,
+overstates the comparison by roughly thirteen points. Any status rule
+citing "the WWII peak" states which series it means.
+
 ## Normalization (reserved for econ)
 
 The overlay site will need cross-unit comparison (a $/bbl crack against a
