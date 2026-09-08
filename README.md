@@ -106,3 +106,17 @@ was measured: its own updater sent a custom UA on the keyless CSV path, so the
 fallback had never once worked, silently, because a key was always set. That is
 the argument for the fetch policy living here rather than being reimplemented
 per app.
+
+## Data and attribution
+
+The MIT licence covers this repository's code. It does not cover the data, which is not
+mine: every series belongs to the body that publishes it and carries that body's own terms.
+Each series names its `source` and `source_url` so the original is always one click away.
+
+`data/recessions.json` is assembled here, not authored: the US bands are derived from
+the NBER chronology via FRED `USREC`, and the Canadian bands are transcribed from the
+C.D. Howe Institute Business Cycle Council chronology. Both belong to their publishers.
+
+Series reached through FRED are redistributed by the Federal Reserve Bank of St. Louis
+under [its terms of use](https://fred.stlouisfed.org/legal/), which ask that you cite the
+original source and note that it was accessed via FRED.
