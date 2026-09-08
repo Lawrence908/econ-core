@@ -138,8 +138,11 @@ def build(name, glyph, raster):
                      write_to=os.path.join(src, "apple-touch-icon.png"),
                      output_width=180, output_height=180)
 
+    # Largest first: Pillow silently drops any requested size bigger than the
+    # image it is saving from, so a 16px base writes a one-frame .ico and
+    # still reports success.
     frames = []
-    for size in (16, 32, 48):
+    for size in (48, 32, 16):
         png = cairosvg.svg2png(bytestring=raw, output_width=size, output_height=size)
         frames.append(Image.open(io.BytesIO(png)).convert("RGBA"))
     frames[0].save(os.path.join(src, "favicon.ico"), format="ICO",
