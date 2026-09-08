@@ -21,7 +21,7 @@ Three things live here and nowhere else:
 ## Vendoring, not importing
 
 ```bash
-./vendor.sh /mnt/storage/apps/jobs
+./vendor.sh ../jobs
 ```
 
 copies a stamped `econcore.py` into the app's `api/` and a stamped
@@ -63,7 +63,7 @@ correction was written, the enumeration below immediately found more. Run it
 instead, which is also how you find the stragglers:
 
 ```bash
-for d in /mnt/storage/apps/*/; do
+for d in ../*/; do
   [ -f "$d/api/econcore.py" ] && printf '%-10s %s\n' "$(basename "$d")" \
     "$(sed -n '1s/.*econ-core \([a-f0-9]*\),.*/\1/p' "$d/api/econcore.py")"
 done
