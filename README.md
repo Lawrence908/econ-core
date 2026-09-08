@@ -31,6 +31,38 @@ as long, so there is no shared runtime path to rot. The stamp (git short rev
 plus date) says exactly what each app got; re-vendor deliberately, per app,
 when econ-core changes.
 
+## The family's favicons
+
+`tools/build-favicons.py` holds the glyph geometry for every site's favicon,
+and is the only place it exists. One frame across the collection, a near-black
+square in the family's own green and paper, and one glyph each, so eleven open
+tabs read as one suite and still tell each other apart at sixteen pixels.
+
+```bash
+python3 tools/build-favicons.py            # every site
+python3 tools/build-favicons.py jobs debt  # named sites only
+```
+
+It writes `favicon.svg`, `favicon.ico` and `apple-touch-icon.png` into each
+sibling app's `src/`, which the apps commit and their Dockerfiles already copy.
+Unlike econcore.py these are not stamped and not vendored: they are built
+files, not a runtime path, and an app whose icon is a year old is not wrong in
+the way a stale fetcher is.
+
+The colours are the sites' own CSS custom properties, `--series-3` for the
+green and `--row-bg` for the paper, so the tab matches the page. Changing them
+here does not change the pages; the sites hold their own copies.
+
+The SVGs need only the standard library. The `.ico` and `.png` need cairosvg
+and Pillow, and without them the script writes the SVGs, leaves the existing
+rasters alone, and says so. That is deliberate: a machine three years from now
+with nothing installed can still redraw a glyph.
+
+New site: add a glyph to `GLYPHS`, run it, and put the three `<link>` lines the
+script prints into that app's `<head>`. Check the result at 16px before
+believing it. Two of the eleven were redrawn after that check, and it is not
+obvious from the 64px version which two.
+
 ## Change rules
 
 - `obs` shape and required fields are append-only; breaking the contract
