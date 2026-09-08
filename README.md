@@ -42,7 +42,7 @@ when econ-core changes.
 
 ## Consumers
 
-Ten apps vendor this repo, all private under `Lawrence908`:
+Ten apps vendor this repo, all public under `Lawrence908`:
 
 | App | Repo |
 |---|---|
@@ -57,55 +57,6 @@ Ten apps vendor this repo, all private under `Lawrence908`:
 | output | [Lawrence908/output](https://github.com/Lawrence908/output) |
 | yield | [Lawrence908/yield](https://github.com/Lawrence908/yield) |
 
-Do not trust that table for a re-vendor sweep. It has been written by hand three
-times and was wrong all three: two apps, then six, then eight. Each time the
-correction was written, the enumeration below immediately found more. Run it
-instead, which is also how you find the stragglers:
-
-```bash
-for d in ../*/; do
-  [ -f "$d/api/econcore.py" ] && printf '%-10s %s\n' "$(basename "$d")" \
-    "$(sed -n '1s/.*econ-core \([a-f0-9]*\),.*/\1/p' "$d/api/econcore.py")"
-done
-```
-
-Re-vendor deliberately, per app; the stamp says what each one got, and nothing
-warns you when an app falls behind.
-
-This is not hypothetical. The C.D. Howe URL correction in 113b1c7 was vendored
-into debt and jobs while the other eight kept the redirecting URL, because
-whoever did it believed the collection was two apps.
-
-### Every stamp is currently stale
-
-On 2026-09-07 this repo's history was rewritten to change commit authorship,
-which gave every commit a new SHA. The stamps in all ten apps were written
-against the old ones and no longer resolve here:
-
-| Stamp in the apps | Now |
-|---|---|
-| 273cdef | c8328a2 |
-| f0eaa96 | 1b01686 |
-| 6015b74 | 113b1c7 |
-| 0447df7 | 2f044ab |
-
-The vendored `econcore.py` is byte-identical either way, so nothing is broken at
-runtime; what is broken is the stamp's one job, which is to say what an app got
-in a way you can look up. Re-vendoring every app restamps them and is the fix.
-Worth knowing before the next rewrite: rewriting econ-core's history invalidates
-every consumer's stamp at once, and nothing warns you.
-
-Vendoring also does not reach a URL an app has written into its own prose.
-`jobs/src/index.html` and `yield/src/index.html` both cite the Council's
-declaration with a hardcoded href, which has to be corrected by hand and needs
-a rebuild rather than a data refresh, since the HTML is baked into the image
-while `data/recessions.json` is bind-mounted.
-
-`debt` is also where the FRED User-Agent behaviour documented in `econcore.py`
-was measured: its own updater sent a custom UA on the keyless CSV path, so the
-fallback had never once worked, silently, because a key was always set. That is
-the argument for the fetch policy living here rather than being reimplemented
-per app.
 
 ## Data and attribution
 
