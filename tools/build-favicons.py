@@ -92,6 +92,11 @@ GLYPHS = {
   <path d="M32 13c13 17 15 23 15 27a15 15 0 0 1-30 0c0-4 2-10 15-27z"
         fill="{GREEN}" stroke="none"/>""",
 
+    # The close against its own average: a jagged line crossing a smooth one.
+    "equity": f"""
+  <path d="M11 39 53 25" stroke="{PAPER}"/>
+  <path d="M11 51 25 22l12 26 16-36" stroke="{GREEN}"/>""",
+
     # The hockey stick.
     "debt": f"""
   <path d="M11 49h19c13 0 12-8 16-34" stroke="{GREEN}"/>""",
